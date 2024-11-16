@@ -18,48 +18,53 @@ public class OrderController {
     // Create a new order
     @PostMapping
     public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        Order createdOrder = orderService.createOrder(order);
-        return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
+//        Order createdOrder = orderService.createOrder(order);
+//        return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // Get an order by ID
     @GetMapping("/{id}")
     public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
-        Order order = orderService.getOrderById(id);
-        if (order != null) {
-            return new ResponseEntity<>(order, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+//        Order order = orderService.getOrderById(id);
+//        if (order != null) {
+//            return new ResponseEntity<>(order, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // Get all orders
     @GetMapping
     public ResponseEntity<List<Order>> getAllOrders() {
-        List<Order> orders = orderService.getAllOrders();
-        return new ResponseEntity<>(orders, HttpStatus.OK);
+//        List<Order> orders = orderService.getAllOrders();
+//        return new ResponseEntity<>(orders, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // Update an order
     @PutMapping("/{id}")
     public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order orderDetails) {
-        Order updatedOrder = orderService.updateOrder(id, orderDetails);
-        if (updatedOrder != null) {
-            return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+//        Order updatedOrder = orderService.updateOrder(id, orderDetails);
+//        if (updatedOrder != null) {
+//            return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // Delete an order
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
-        boolean isDeleted = orderService.deleteOrder(id);
-        if (isDeleted) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+//        boolean isDeleted = orderService.deleteOrder(id);
+//        if (isDeleted) {
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
 
