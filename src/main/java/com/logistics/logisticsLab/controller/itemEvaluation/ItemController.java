@@ -2,8 +2,8 @@ package com.logistics.logisticsLab.controller.itemEvaluation;
 
 import java.util.List;
 
-import com.logistics.logisticsLab.dto.itemEvaluation.ItemRequestDTO;
-import com.logistics.logisticsLab.dto.itemEvaluation.ItemResponseDTO;
+import com.logistics.logisticsLab.dto.itemEvaluation.ItemRequest;
+import com.logistics.logisticsLab.dto.itemEvaluation.ItemResponse;
 import com.logistics.logisticsLab.service.itemEvaluation.ItemServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,9 +28,9 @@ public class ItemController {
 
 
     @PostMapping()
-    public ResponseEntity<ItemResponseDTO> CreateItem(@RequestBody ItemRequestDTO item){
+    public ResponseEntity<ItemResponse> CreateItem(@RequestBody ItemRequest item){
         try{
-            ItemResponseDTO newItem =  itemService.addItem(item);
+            ItemResponse newItem =  itemService.addItem(item);
             log.info("Item Created",newItem);
             return new ResponseEntity<>(newItem,HttpStatus.CREATED);
             // URI location = new URI("/item/" + newItem.getItemId());
@@ -43,9 +43,9 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public ResponseEntity<ItemResponseDTO> getItem(@PathVariable String itemId){
+    public ResponseEntity<ItemResponse> getItem(@PathVariable Long itemId){
         try{
-            ItemResponseDTO item = itemService.getItem(itemId);
+            ItemResponse item = itemService.getItem(itemId);
             log.info("Item fetched with id :" + itemId,item);
             return new ResponseEntity<>(item,HttpStatus.FOUND);
         }catch(Exception e){
@@ -55,9 +55,9 @@ public class ItemController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<ItemResponseDTO>> getAllItems(){
+    public ResponseEntity<List<ItemResponse>> getAllItems(){
         try{
-            List<ItemResponseDTO> items = itemService.getAllItems();
+            List<ItemResponse> items = itemService.getAllItems();
             log.info("All Items fetched");
             return new ResponseEntity<>(items,HttpStatus.FOUND);
         }catch(Exception e){
@@ -67,9 +67,9 @@ public class ItemController {
     }
 
     @DeleteMapping("/{itemId}")
-    public ResponseEntity<ItemResponseDTO> deleteItem(@PathVariable String itemId){
+    public ResponseEntity<ItemResponse> deleteItem(@PathVariable Long itemId){
         try{
-            ItemResponseDTO item = itemService.removeItem(itemId);
+            ItemResponse item = itemService.removeItem(itemId);
             log.info("Item deleted with id :" + itemId,item);
             return new ResponseEntity<>(item,HttpStatus.OK);
         }catch(Exception e){

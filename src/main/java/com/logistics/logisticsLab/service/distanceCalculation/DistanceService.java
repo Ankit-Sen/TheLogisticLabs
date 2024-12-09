@@ -1,4 +1,4 @@
-package com.logistics.logisticsLab.service.itemEvaluation.distanceCalculation;
+package com.logistics.logisticsLab.service.distanceCalculation;
 
 public class DistanceService {
 }

@@ -2,8 +2,8 @@ package com.logistics.logisticsLab.service.itemEvaluation;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.logistics.logisticsLab.dto.itemEvaluation.ItemRequestDTO;
-import com.logistics.logisticsLab.dto.itemEvaluation.ItemResponseDTO;
+import com.logistics.logisticsLab.dto.itemEvaluation.ItemRequest;
+import com.logistics.logisticsLab.dto.itemEvaluation.ItemResponse;
 import com.logistics.logisticsLab.model.itemEvaluation.Dimension;
 import com.logistics.logisticsLab.model.itemEvaluation.Driver;
 import com.logistics.logisticsLab.model.itemEvaluation.Item;
@@ -19,32 +19,32 @@ public class ItemServiceImpl implements IItemService{
     @Autowired
     private IItemRepository itemRepository;
 
-    public ItemResponseDTO addItem(ItemRequestDTO item) {
+    public ItemResponse addItem(ItemRequest item) {
         Dimension dimension = new Dimension(item.getHeight(),item.getLength(),item.getWidth(),item.getWeight());
-        Item newItem = new Item(item.getName(),ItemType.valueOf(item.getItemType()),dimension);
+        Item newItem = new Item(item.getName(),ItemType.valueOf(item.getItemType()),"dimension");
         ItemType type = ItemType.valueOf(item.getItemType());
         newItem.setFragile(isFragile(type));
         Item itemResponse = itemRepository.save(newItem);
-        return new ItemResponseDTO(itemResponse);
+        return new ItemResponse(itemResponse);
     }
 
-    public ItemResponseDTO getItem(String itemId) {
+    public ItemResponse getItem(Long itemId) {
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new RuntimeException("No such Item exists"));
-        return new ItemResponseDTO(item);
+        return new ItemResponse(item);
     }
 
-    public List<ItemResponseDTO> getAllItems() {
+    public List<ItemResponse> getAllItems() {
         List<Item> items = (List<Item>) itemRepository.findAll();
         if(items.size()!=0)
-            return items.stream().map(item -> new ItemResponseDTO(item)).collect(Collectors.toList());
+            return items.stream().map(item -> new ItemResponse(item)).collect(Collectors.toList());
         else
             throw new RuntimeException("List is Empty");
     }
 
-    public ItemResponseDTO removeItem(String itemId) {
+    public ItemResponse removeItem(Long itemId) {
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new RuntimeException("Item does not exist"));
         itemRepository.deleteById(itemId);
-        return new ItemResponseDTO(item);
+        return new ItemResponse(item);
     }
 
     private boolean isFragile(ItemType type){
@@ -61,12 +61,13 @@ public class ItemServiceImpl implements IItemService{
 
 
     public String getDriverClassification(Item item){
-        if((item.getDimension().getWeight() < 2000) && (item.getDimension().getVolume() < 2000))
-            return String.valueOf(Driver.CLASS1);
-        else if((item.getDimension().getWeight() < 5000) && (item.getDimension().getVolume() < 5000))
-            return String.valueOf(Driver.CLASS2);
-        else
-            return String.valueOf(Driver.CLASS3);
+        // if((item.getDimension().getWeight() < 2000) && (item.getDimension().getVolume() < 2000))
+        //     return String.valueOf(Driver.CLASS1);
+        // else if((item.getDimension().getWeight() < 5000) && (item.getDimension().getVolume() < 5000))
+        //     return String.valueOf(Driver.CLASS2);
+        // else
+        //     return String.valueOf(Driver.CLASS3);
+        return String.valueOf(Driver.CLASS3);
     }
 
 }

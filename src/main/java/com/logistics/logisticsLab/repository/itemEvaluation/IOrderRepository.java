@@ -1,7 +1,11 @@
 package com.logistics.logisticsLab.repository.itemEvaluation;
 
-import com.logistics.logisticsLab.controller.itemEvaluation.Order;
+import com.logistics.logisticsLab.model.itemEvaluation.Order;
 import org.springframework.data.repository.CrudRepository;
 
-public interface IOrderRepository extends CrudRepository<Order,String> {
+import java.util.List;
+
+public interface IOrderRepository extends CrudRepository<Order,Long> {
+
+    public List<Order>  findAll();
 }
