@@ -19,40 +19,40 @@ public class GenericAppEntity {
     private  EntityManager entityManager;
 
     public String findFuelId(String val) {
-        if (val != null) {
-            String fuelDesc = val.toLowerCase().replaceAll("\\s", "");
-            try {
-                String sql = "Select a.fuel_ID from motordb.Fuel a where REPLACE(lower(a.fuel_desc),' ','') = '" + fuelDesc+ "'";
-
-                Query query = entityManager.createNativeQuery(sql);
-                List<String> results = query.getResultList();
-                System.out.println(" FUEL ID : "+results);
-                return results.get(0);
-            }
-            catch (Exception e) {
-                logger.info("Error in findFuelId" + e.getMessage());
-                return "0";
-            }
-         }
-        return "0";
+//        if (val != null) {
+//            String fuelDesc = val.toLowerCase().replaceAll("\\s", "");
+//            try {
+//                String sql = "Select a.fuel_ID from motordb.Fuel a where REPLACE(lower(a.fuel_desc),' ','') = '" + fuelDesc+ "'";
+//
+//                Query query = entityManager.createNativeQuery(sql);
+//                List<String> results = query.getResultList();
+//                System.out.println(" FUEL ID : "+results);
+//                return results.get(0);
+//            }
+//            catch (Exception e) {
+//                logger.info("Error in findFuelId" + e.getMessage());
+//                return "0";
+//            }
+//         }
+        return "1";
     }
 
     public double getPetrolPrice(String val) {
-        if (val != null) {
-            String cityDesc = val.toLowerCase().replaceAll("\\s", "");
-            try {
-                String sql = "Select a.price from motordb.Petrol_Prices a where REPLACE(lower(a.city),' ','') = '" + cityDesc+ "'";
-
-                Query query = entityManager.createNativeQuery(sql);
-                List<String> results = query.getResultList();
-                return Double.parseDouble(results.get(0));
-            }
-            catch (Exception e) {
-                logger.info("Error in getPetrolPrice" + e.getMessage());
-                return 0.0;
-            }
-        }
-        return 0.0;
+//        if (val != null) {
+//            String cityDesc = val.toLowerCase().replaceAll("\\s", "");
+//            try {
+//                String sql = "Select a.price from motordb.Petrol_Prices a where REPLACE(lower(a.city),' ','') = '" + cityDesc+ "'";
+//
+//                Query query = entityManager.createNativeQuery(sql);
+//                List<String> results = query.getResultList();
+//                return Double.parseDouble(results.get(0));
+//            }
+//            catch (Exception e) {
+//                logger.info("Error in getPetrolPrice" + e.getMessage());
+//                return 0.0;
+//            }
+//        }
+        return 105.0;
     }
 
     public double getDieselPrice(String val) {
@@ -75,17 +75,18 @@ public class GenericAppEntity {
 
     public String getRiderFuelType(String val) {
 
-        try {
-            String sql = "Select a.fuel_Type from motordb.Rider_Details a where a.Rider_ID = '" + val+ "'";
-
-            Query query = entityManager.createNativeQuery(sql);
-            List<String> results = query.getResultList();
-            return results.get(0);
-        }
-        catch (Exception e) {
-            logger.info("Error in getMileage" + e.getMessage());
-            return "0";
-        }
+//        try {
+//            String sql = "Select a.fuel_Type from motordb.Rider_Details a where a.Rider_ID = '" + val+ "'";
+//
+//            Query query = entityManager.createNativeQuery(sql);
+//            List<String> results = query.getResultList();
+//            return results.get(0);
+//        }
+//        catch (Exception e) {
+//            logger.info("Error in getMileage" + e.getMessage());
+//            return "0";
+//        }
+        return "petrol";
     }
 
     public String getRiderStatus(String val) {
@@ -108,17 +109,18 @@ public class GenericAppEntity {
 
     public double getMileage(String val) {
 
-        try {
-            String sql = "Select a.mileage from motordb.Rider_Details a where a.Rider_ID = '" + val+ "'";
-
-            Query query = entityManager.createNativeQuery(sql);
-            List<String> results = query.getResultList();
-            return Double.parseDouble(results.get(0));
-        }
-        catch (Exception e) {
-            logger.info("Error in getMileage" + e.getMessage());
-            return 0.0;
-        }
+//        try {
+//            String sql = "Select a.mileage from motordb.Rider_Details a where a.Rider_ID = '" + val+ "'";
+//
+//            Query query = entityManager.createNativeQuery(sql);
+//            List<String> results = query.getResultList();
+//            return Double.parseDouble(results.get(0));
+//        }
+//        catch (Exception e) {
+//            logger.info("Error in getMileage" + e.getMessage());
+//            return 0.0;
+//        }
+        return 45.0;
     }
 
     public double getBalance(String val) {
@@ -155,7 +157,7 @@ public class GenericAppEntity {
 //
 //            // Parse the result to Double
 //            return Double.parseDouble(results.get(0).toString());
-            return 10.0;
+            return 3.0;
         } catch (Exception e) {
             logger.error("Error in getDistance for sourceCode: {} and destinationCode: {} - {}", sourceCode, destinationCode, e.getMessage());
             return 0.0;

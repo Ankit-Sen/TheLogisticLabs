@@ -21,6 +21,7 @@ public class PriceEstimateRequest {
     private Integer destinationCode;
     private String deliveryType;    // Delivery type (e.g., "Standard", "Express")
     private String message;// Delivery instruction
+//    private Integer inventoryCost;
 }
 
 //There was also a box outside this Dimension would be Around 14 CM × 14 CM × 20 CM With box,
