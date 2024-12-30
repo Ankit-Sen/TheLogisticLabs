@@ -23,6 +23,8 @@ public class PriceEstimateResponse {
     private String message;         // Any additional message for the user
     private Double estimatedPrice;  // Estimated delivery price
     private String deliveryType;    // Delivery type (e.g., "Standard", "Express")
+    private Double openBoxCharges;
+    private Double costToCompany;
 
     public Boolean getFragile() {
         if (fragile == null) {

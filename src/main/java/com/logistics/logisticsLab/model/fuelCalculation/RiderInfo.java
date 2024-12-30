@@ -24,8 +24,12 @@ public class RiderInfo {
     private double distTravelled;
     private String vehicle;
     private String fuel_Type;
+    private double totKWH;
     private double balance;
     private String order_Status;
     private String riderStatus;
     private long tripNum;
+    private String lastAddress;
+    private boolean onLease;
+
 }

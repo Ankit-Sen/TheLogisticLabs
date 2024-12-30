@@ -9,6 +9,8 @@ import com.logistics.logisticsLab.repository.fuelCalculation.RiderInfoRepository
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
+
 @Service
 public class FuelService implements IFuelService {
     private static Logger logger = LoggerFactory.getLogger(GenericAppEntity.class);
@@ -21,22 +23,30 @@ public class FuelService implements IFuelService {
         double fuelPrice=0.0;
         //double costToComp;
 
-        if(genericAppEntity.findFuelId(genericAppEntity.getRiderFuelType(id))=="1")
+        if(Objects.equals(genericAppEntity.findFuelId(genericAppEntity.getRiderFuelType(id)), "2"))
         {
-            fuelPrice=genericAppEntity.getPetrolPrice(city.toLowerCase());
+            fuelPrice+=genericAppEntity.getPetrolPrice(city.toLowerCase());
         }
-        else if (genericAppEntity.findFuelId(genericAppEntity.getRiderFuelType(id))=="2")
+        else if (Objects.equals(genericAppEntity.findFuelId(genericAppEntity.getRiderFuelType(id)), "1"))
         {
-            fuelPrice=genericAppEntity.getDieselPrice(city.toLowerCase());
+            fuelPrice+=genericAppEntity.getDieselPrice(city.toLowerCase());
         }
-
+        else if (Objects.equals(genericAppEntity.findFuelId(genericAppEntity.getRiderFuelType(id)), "7"))
+        {
+            fuelPrice+=genericAppEntity.getEVPrice(city.toLowerCase());
+        }
         return fuelPrice;
 
     }
     @Override
-    public double getCostToCompany(double dist,String id, String city) {
+    public double getCostToCompany(Double dist,String id, String city) {
         // returns the total fuel price charged for a certain distance
-        return (getFuelPrice(city,id)/genericAppEntity.getMileage(id))*(dist+10);
+        if (Objects.equals(genericAppEntity.findFuelId(genericAppEntity.getRiderFuelType(id)), "7"))
+        {
+            return getFuelPrice(city,id)*genericAppEntity.getKWH(id);
+        }
+        else
+            return (getFuelPrice(city,id)/genericAppEntity.getMileage(id))*(dist+2);
 
     }
 
@@ -50,13 +60,19 @@ public class FuelService implements IFuelService {
     }
     @Override
     public void updateBalance(String id, double price) {
-        repo.updateBalance(id, price);
+//        repo.updateBalanceById(id, price);
     }
+
     @Override
-    public void updateTripNum(String id, long num)
-    {
-        repo.updateTripNum(id, num);
+    public void updateTripNum(String id, long num) {
 
     }
+//    @Override
+//    public void updateTripNum(String id, long num)
+//    {
+//        repo.updateTrip_NumById(id, num);
+//
+//    }
+
 
 }
