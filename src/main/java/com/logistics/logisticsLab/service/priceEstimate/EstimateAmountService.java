@@ -9,6 +9,9 @@ import com.logistics.logisticsLab.service.fuelCalculation.IRiderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 @Service
 public class EstimateAmountService implements IEstimateAmountService{
 
@@ -30,7 +33,7 @@ public class EstimateAmountService implements IEstimateAmountService{
         Double distanceBasedPricing = calculateDistancebasedPricing(request.getSourceCode(), request.getDestinationCode());
         double deliveryTypeMultiplier = "Express".equalsIgnoreCase(request.getDeliveryType()) ? 1.5 : 1.0;
         Double fragileAmount = calculateFragileValue(request.getItemType());
-        Double estimatedPrice = (basePrice + dimensionBasedPrice + weightBasedPricing + distanceBasedPricing) * deliveryTypeMultiplier;
+        Double estimatedPrice = roundOff((basePrice + dimensionBasedPrice + weightBasedPricing + distanceBasedPricing) * deliveryTypeMultiplier);
 //        +fragileAmount+platformPrice
 
         return   PriceEstimateResponse.builder()
@@ -48,7 +51,7 @@ public class EstimateAmountService implements IEstimateAmountService{
                 .estimatedPrice(estimatedPrice)
                 .deliveryType(request.getDeliveryType())
                 .openBoxCharges(30.0)//Provided details for open box delivery
-                .costToCompany(distanceBasedPricing)
+                .fuelCost(calculateFuelPrice(request.getSourceCode(), request.getDestinationCode()))
                 .build();
     }
 
@@ -57,7 +60,7 @@ public class EstimateAmountService implements IEstimateAmountService{
         if(length <= getMaximumLengthPermeableLimit){
             return 0.0;
         }else{
-            return (length- getMaximumLengthPermeableLimit/4)*10.0;
+            return ((length- getMaximumLengthPermeableLimit)/4)*10.0;
         }
     }
 
@@ -65,13 +68,19 @@ public class EstimateAmountService implements IEstimateAmountService{
         estimateAmountRepository.setMaxLength(length);
     }
 
-    private Double getWidthBasedPricing(Double length) {
+    private Double getWidthBasedPricing(Double width) {
         Double getMaximumWidthPermeableLimit = estimateAmountRepository.getMaxWidth();
-        if(length < getMaximumWidthPermeableLimit){
+        if(width < getMaximumWidthPermeableLimit){
             return 0.0;
         }else{
-            return (length- getMaximumWidthPermeableLimit/4)*10.0;
+            return ((width- getMaximumWidthPermeableLimit)/4)*10.0;
         }
+    }
+
+
+
+    private Double roundOff(Double value) {
+        return Double.parseDouble(String.format("%.2f", value));
     }
 
     private void setMaximumWidthPermeableLimit(Double width) {
@@ -83,12 +92,12 @@ public class EstimateAmountService implements IEstimateAmountService{
         return estimateAmountRepository.getPlatformPrice();
     }
 
-    private Double getHeightBasedPricing(Double length) {
+    private Double getHeightBasedPricing(Double height) {
         Double getMaximumHeightPermeableLimit = estimateAmountRepository.getMaxHeight();
-        if(length <= getMaximumHeightPermeableLimit){
+        if(height <= getMaximumHeightPermeableLimit){
             return 0.0;
         }else{
-            return (length- getMaximumHeightPermeableLimit/10)*30.0;
+            return (height - getMaximumHeightPermeableLimit)*30.0;
         }
     }
 
@@ -106,15 +115,23 @@ public class EstimateAmountService implements IEstimateAmountService{
         Double distance = genericAppEntity.getDistance(sourceCode, destinationCode);
         double cost = fuelService.getCostToCompany(distance,riderId,"Kolkata");
         fuelService.updateBalance(riderId,cost);
-        return cost;
-//        if(distance < 7)
-//            return 0.0;
-//        else if(distance < 15){
-//            return fuelService.getCostToCompany(distance,riderId,"Kolkata")-fuelService.getCostToCompany(distance-7,riderId,"Kolkata");
-//        }
-//        else
-//            return fuelService.getCostToCompany(distance,riderId,"Kolkata")-fuelService.getCostToCompany(distance-15,riderId,"Kolkata");
+//        return cost;
+        if(distance < 7)
+            return 0.0;
+        else if(distance < 15){
+            return fuelService.getCostToCompany(distance,riderId,"Kolkata")-fuelService.getCostToCompany(distance-7,riderId,"Kolkata");
+        }
+        else
+            return fuelService.getCostToCompany(distance,riderId,"Kolkata")-fuelService.getCostToCompany(distance-15,riderId,"Kolkata");
 //        return getPerKmCost()*distance; // Assume a fixed distance factor for simplicity
+    }
+//Testing
+    private Double calculateFuelPrice(Integer sourceCode, Integer destinationCode) {
+        String riderId = riderService.filterRider(genericAppEntity.getRiderPool());
+        Double distance = genericAppEntity.getDistance(sourceCode, destinationCode);
+        double cost = fuelService.getCostToCompany(distance,riderId,"Kolkata");
+        fuelService.updateBalance(riderId,cost);
+        return roundOff(cost);
     }
 
     private double calculateFragileValue(String itemType){

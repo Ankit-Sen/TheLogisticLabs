@@ -165,8 +165,8 @@ public class GenericAppEntity {
             String sql = "Select a.trip_Num from logisticsLab.Rider_Details a where a.Rider_ID = '" + val+ "'";
 
             Query query = entityManager.createNativeQuery(sql);
-            List<String> results = query.getResultList();
-            return Integer.parseInt(results.get(0));
+            List<Object> results = query.getResultList();
+            return Integer.parseInt(results.get(0).toString());
         }
         catch (Exception e) {
             logger.info("Error in getTrip_Num" + e.getMessage());

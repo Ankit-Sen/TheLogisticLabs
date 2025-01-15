@@ -24,7 +24,7 @@ public class PriceEstimateResponse {
     private Double estimatedPrice;  // Estimated delivery price
     private String deliveryType;    // Delivery type (e.g., "Standard", "Express")
     private Double openBoxCharges;
-    private Double costToCompany;
+    private Double fuelCost;
 
     public Boolean getFragile() {
         if (fragile == null) {
